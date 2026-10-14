@@ -4,7 +4,7 @@
 
 你需要一个有权访问 [DataAgent 私有发行仓库](https://github.com/FelixLinn/DataAgent-Releases) 的 GitHub 账号，并已接受仓库邀请。登录、模型密钥和更新凭据由你在本机填写，不要粘贴到聊天中。
 
-截至 2026 年 10 月 14 日，已发布的 [v0.2.0 安装包](https://github.com/FelixLinn/DataAgent-Releases/releases/tag/v0.2.0) 仅支持 **macOS Apple Silicon（M 系列）**，约 1.52 GB。Windows、Linux 和 Intel Mac 用户应先让 Agent 检查是否已有匹配的新发行包；没有时等待相应版本，不使用其他平台的包。
+截至 2026 年 10 月 14 日，[v0.2.0 下载页](https://github.com/FelixLinn/DataAgent-Releases/releases/tag/v0.2.0) 提供 **macOS Apple Silicon（M 系列）0.2.0** 和 **Windows x64 0.2.0-preview.1** 的完整安装包，大小分别约 1.52 GB 和 1.30 GB。Windows 包已通过 Windows CI 与 Windows 10 实机安装、托管服务启动和重复启动验证。Linux 与 Intel Mac 暂无已验收的可下载包。
 
 ## 复制给 Agent 的安装指令
 
@@ -23,11 +23,11 @@
 
 1. 检查操作系统、CPU 架构、可用磁盘及已有 DataAgent 安装。预留至少 20 GB 空间用于下载、解压、安装和运行时展开。已有安装时先识别其版本和数据目录；如果同版本已正常运行，直接验证并复用。不要覆盖同名但不属于 DataAgent 的目录，不自动迁移源码工作区数据。
 
-2. 查询私有仓库实际发布的版本、说明和附件，选择支持本机平台的最新正式版本，不用草稿或 prerelease。已知首版 v0.2.0 只有 DataAgent-0.2.0-macos-arm64.zip；其他平台是否可安装，以当前真实附件和发行说明为准。找不到匹配包时明确说明并停止安装，不猜测下载地址，不改用其他架构包，也不擅自转为源码编译。
+2. 查询私有仓库实际发布的版本、说明和附件，选择已发布下载页中支持本机平台且已验收的安装包，不用草稿附件。v0.2.0 下载页包含 DataAgent-0.2.0-macos-arm64.zip 和 DataAgent-0.2.0-preview.1-windows-x64.zip；Windows 包内版本为 0.2.0-preview.1，不要重命名为 0.2.0。其他平台是否可安装，以当前真实附件和发行说明为准。找不到匹配包时明确说明并停止安装，不猜测下载地址，不改用其他架构包，也不擅自转为源码编译。
 
 3. 优先复用已授权的 GitHub CLI 下载；未登录时引导我在浏览器完成 gh auth login。没有 CLI 时可使用浏览器授权下载；若你的工具无法操作浏览器，说明我应下载哪两个文件、放到哪里，随后继续。没有仓库权限时让我接受邀请或联系维护者，不把 404 当成软件包损坏。不要索取聊天中的访问令牌，不回显、共享或把凭据写进脚本。
 
-4. 将同一版本的目标 ZIP 和 SHA256SUMS 下载到单独目录，核验对应文件的 SHA256，再完整解压到该下载目录。核验不通过就停止，不继续运行。不要把下载目录放在最终安装目录里。macOS 使用 shasum -a 256，Linux 使用 sha256sum，Windows 使用 Get-FileHash -Algorithm SHA256。不要执行未经查看的远程 curl | sh 脚本。
+4. 将同一下载页的目标 ZIP 和对应校验文件下载到单独目录（macOS 为 SHA256SUMS，Windows 为 SHA256SUMS-windows-x64），核验对应文件的 SHA256，再完整解压到该下载目录。核验不通过就停止，不继续运行。不要把下载目录放在最终安装目录里。macOS 使用 shasum -a 256，Linux 使用 sha256sum，Windows 使用 Get-FileHash -Algorithm SHA256。不要执行未经查看的远程 curl | sh 脚本。
 
 5. 使用解压目录随包提供的安装脚本：macOS 为 sh DataAgent/install.command；Windows 为 DataAgent\install.cmd；Linux 为 sh DataAgent/install.sh。只在平台匹配时运行。安装脚本使用包内 Python，不需要自行安装系统 Python、Java、Node、Git、ZooKeeper 或 DSH 桌面应用。正常安装使用默认路径，不把验收专用的 --data-dir 参数传给安装器。如果已有治理任务在运行、排队或等待审阅，保留现场并等任务结束，不强制停止或删除锁文件。
 
@@ -52,7 +52,7 @@ Agent 可以完成下载和安装操作，但 GitHub 登录、仓库邀请、密
 
 ## 安装后的目录和入口
 
-以下是默认路径；已有安装或显式选择自定义路径时，以 Agent 实际核验的结果为准。Windows/Linux 行用于对应发行包可用后的安装。
+以下是默认路径；已有安装或显式选择自定义路径时，以 Agent 实际核验的结果为准。Windows 和 macOS 已有下载包；Linux 行用于对应发行包可用后的安装。
 
 | 系统 | 程序目录 | 用户数据目录 | 再次启动 |
 | --- | --- | --- | --- |
@@ -66,7 +66,37 @@ Linux 未设置 `XDG_DATA_HOME` 时，默认使用 `~/.local/share/dataagent/`�
 
 ## 手动下载命令
 
-以下示例只适用于 **macOS Apple Silicon 的 v0.2.0**。已安装 GitHub CLI 且接受仓库邀请后，在终端逐步执行：
+### Windows x64
+
+已接受仓库邀请并安装 GitHub CLI 的用户，在 PowerShell 中逐步执行：
+
+```powershell
+gh auth login
+New-Item -ItemType Directory -Path DataAgent-download-windows
+Set-Location DataAgent-download-windows
+gh release download v0.2.0 --repo FelixLinn/DataAgent-Releases --pattern 'DataAgent-0.2.0-preview.1-windows-x64.zip' --pattern SHA256SUMS-windows-x64
+Get-FileHash .\DataAgent-0.2.0-preview.1-windows-x64.zip -Algorithm SHA256
+Get-Content .\SHA256SUMS-windows-x64
+```
+
+逐字核对两处 SHA256，相同后完整解压，再执行安装：
+
+```powershell
+Expand-Archive .\DataAgent-0.2.0-preview.1-windows-x64.zip -DestinationPath .\unpacked
+.\unpacked\DataAgent\install.cmd
+```
+
+下次可从开始菜单打开 DataAgent，也可在 PowerShell 执行：
+
+```powershell
+& "$env:LOCALAPPDATA\Programs\DataAgent\DataAgent.cmd"
+```
+
+首次启动会展开随包依赖，可能需要数分钟。后续启动会校验并复用已有服务。Windows 本机部署不需要为 Java 开放外部网络访问；防火墙提示可选择取消。
+
+### macOS Apple Silicon
+
+以下示例适用于 **macOS Apple Silicon 的 0.2.0**。已安装 GitHub CLI 且接受仓库邀请后，在终端逐步执行：
 
 ```sh
 gh auth login
