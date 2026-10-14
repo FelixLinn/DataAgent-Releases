@@ -2,6 +2,10 @@
 
 这是供授权内部用户下载 DataAgent 的私有发行仓库，源代码在独立仓库维护。
 
+## 让自己的 Agent 帮你安装
+
+打开[快速安装与部署](QUICKSTART.md)，将完整指令复制给能操作本机的 Agent。它会检查平台、授权下载安装包、配置数据服务并验收；登录和密钥由你在本机完成。
+
 ## 下载与安装
 
 [下载 DataAgent 0.2.0](https://github.com/FelixLinn/DataAgent-Releases/releases/tag/v0.2.0)
