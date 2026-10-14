@@ -4,7 +4,7 @@
 
 ## 让自己的 Agent 帮你安装
 
-打开[快速安装与部署](QUICKSTART.md)，将完整指令复制给能操作本机的 Agent。它会检查平台、授权下载安装包、配置数据服务并验收；登录和密钥由你在本机完成。
+打开[快速安装与部署](QUICKSTART.md)，将完整指令复制给能执行本机终端命令的 Agent。它会检查平台、授权下载安装包、配置数据服务并验收；登录和密钥由你在本机完成。
 
 ## 下载与安装
 
@@ -26,7 +26,7 @@ macOS 包使用 ad-hoc 签名，尚未完成 Apple 公证；Windows 包尚未完
 
 ### macOS Apple Silicon
 
-已安装 GitHub CLI 的用户先运行 `gh auth login`，登录有权访问此仓库的账号，再逐步执行：
+已安装 GitHub CLI 的用户先检查 `gh auth status --hostname github.com` 和仓库权限；已登录则复用，仅未登录时才在本机执行 `gh auth login --hostname github.com --git-protocol https`。随后逐步执行：
 
 ```sh
 mkdir -p DataAgent-download
@@ -34,17 +34,19 @@ cd DataAgent-download
 gh release download v0.2.1 --repo FelixLinn/DataAgent-Releases --pattern 'DataAgent-0.2.1-macos-arm64.zip' --pattern SHA256SUMS
 shasum -a 256 -c SHA256SUMS
 unzip DataAgent-0.2.1-macos-arm64.zip
-sh DataAgent/install.command
+sh DataAgent/install.command --no-launch
 ```
+
+以上命令禁止安装后自动打开窗口。随后按 [无浏览器首次配置](QUICKSTART.md#无浏览器首次配置021-已支持) 使用 `--no-open --progress-json` 启动，并通过本机配置接口完成设置和只读验收。默认不需要 computer use；也可由用户自行打开 DataAgent 使用图形设置。
 
 校验失败时不要继续安装。私有附件不能匿名 `curl` 下载；没有 GitHub CLI 也可以通过浏览器登录下载。
 
 ### Windows x64
 
-已接受仓库邀请并安装 GitHub CLI 的用户，在 PowerShell 中逐步执行：
+已接受仓库邀请并安装 GitHub CLI 的用户，在 PowerShell 中逐步执行；仅未登录时才先自行执行 `gh auth login --hostname github.com --git-protocol https`：
 
 ```powershell
-gh auth login
+gh auth status --hostname github.com
 New-Item -ItemType Directory -Path DataAgent-download-windows
 Set-Location DataAgent-download-windows
 gh release download v0.2.1 --repo FelixLinn/DataAgent-Releases --pattern 'DataAgent-0.2.1-windows-x64.zip' --pattern SHA256SUMS-windows-x64
@@ -56,10 +58,10 @@ Get-Content .\SHA256SUMS-windows-x64
 
 ```powershell
 Expand-Archive .\DataAgent-0.2.1-windows-x64.zip -DestinationPath .\unpacked
-.\unpacked\DataAgent\install.cmd
+.\unpacked\DataAgent\install.cmd --no-launch
 ```
 
-下次可从开始菜单打开 DataAgent，也可在 PowerShell 执行：
+安装后先按 [无浏览器首次配置](QUICKSTART.md#无浏览器首次配置021-已支持) 完成启动与配置。下次可从开始菜单打开 DataAgent，也可在 PowerShell 执行：
 
 ```powershell
 & "$env:LOCALAPPDATA\Programs\DataAgent\DataAgent.cmd"
