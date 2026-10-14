@@ -4,7 +4,7 @@
 
 你需要一个有权访问 [DataAgent 私有发行仓库](https://github.com/FelixLinn/DataAgent-Releases) 的 GitHub 账号，并已接受仓库邀请。登录、模型密钥和更新凭据由你在本机填写，不要粘贴到聊天中。
 
-截至 2026 年 10 月 14 日，[v0.2.0 下载页](https://github.com/FelixLinn/DataAgent-Releases/releases/tag/v0.2.0) 提供 **macOS Apple Silicon（M 系列）0.2.0** 和 **Windows x64 0.2.0-preview.1** 的完整安装包，大小分别约 1.52 GB 和 1.30 GB。Windows 包已通过 Windows CI 与 Windows 10 实机安装、托管服务启动和重复启动验证。Linux 与 Intel Mac 暂无已验收的可下载包。
+旧 macOS 0.2.0 和 Windows 0.2.0-preview.1 包存在托管 IGinX 监听所有网卡的问题，请选择修复后的 **0.2.1** 完整包。下载前确认 [v0.2.1 下载页](https://github.com/FelixLinn/DataAgent-Releases/releases/tag/v0.2.1) 已提供本机平台的附件及验收说明；没有匹配附件时停止安装。各平台分批完成构建，不能把一个平台的包用于另一个平台。Linux 与 Intel Mac 的可用性同样以实际发布并验收的附件为准。
 
 ## 复制给 Agent 的安装指令
 
@@ -23,7 +23,7 @@
 
 1. 检查操作系统、CPU 架构、可用磁盘及已有 DataAgent 安装。预留至少 20 GB 空间用于下载、解压、安装和运行时展开。已有安装时先识别其版本和数据目录；如果同版本已正常运行，直接验证并复用。不要覆盖同名但不属于 DataAgent 的目录，不自动迁移源码工作区数据。
 
-2. 查询私有仓库实际发布的版本、说明和附件，选择已发布下载页中支持本机平台且已验收的安装包，不用草稿附件。v0.2.0 下载页包含 DataAgent-0.2.0-macos-arm64.zip 和 DataAgent-0.2.0-preview.1-windows-x64.zip；Windows 包内版本为 0.2.0-preview.1，不要重命名为 0.2.0。其他平台是否可安装，以当前真实附件和发行说明为准。找不到匹配包时明确说明并停止安装，不猜测下载地址，不改用其他架构包，也不擅自转为源码编译。
+2. 查询私有仓库实际发布的版本、说明和附件，选择支持本机平台、通过验收且没有已知安装阻塞问题的最新正式发行包，不用草稿或 Acceptance/Failure 验收专用附件。包内版本与下载页标签可能不同，以安装清单为准，不自行重命名版本。不要默认选择旧的 v0.2.0：其中 macOS 0.2.0 和 Windows 0.2.0-preview.1 的托管 IGinX 存在监听所有网卡的问题，应选择发行说明明确已修复的新包。找不到匹配包时明确说明并停止安装，不猜测下载地址，不改用其他架构包，也不擅自转为源码编译。
 
 3. 优先复用已授权的 GitHub CLI 下载；未登录时引导我在浏览器完成 gh auth login。没有 CLI 时可使用浏览器授权下载；若你的工具无法操作浏览器，说明我应下载哪两个文件、放到哪里，随后继续。没有仓库权限时让我接受邀请或联系维护者，不把 404 当成软件包损坏。不要索取聊天中的访问令牌，不回显、共享或把凭据写进脚本。
 
@@ -35,7 +35,7 @@
 
 7. 需要模型凭据时，让我在首次设置页或受支持的本机隐藏输入入口自行填写。不读取其他应用的密钥，不把密钥放到命令参数或报告。如果我暂不配置，仍完成可执行的安装、数据服务与工作台验收，并明确标为“模型尚未配置”，不要报告 Agent 已可正常调用模型。
 
-8. 验证安装版本、实际工作台地址、页面可打开、后端确实连接 IGinX，并在界面中查看数据项目页。新安装没有项目是正常现象。再次打开启动入口，确认复用已有服务而不是重复启动。若只能完成部分检查，逐项说明已通过、未通过和需要我操作的步骤；没有运行完整 /govern 就不要声称治理全链已验收。不要为验收修改业务数据。
+8. 验证安装版本、实际工作台地址、页面可打开、后端确实连接 IGinX，并在界面中查看数据项目页。检查托管 ZooKeeper、IGinX 和存储进程的实际监听地址，必须是环回地址，不能仅凭配置 IP 或本机客户端连接判定通过；若检查不通过，保留证据并停止继续启动，不自行修改官方包或系统安全保护。新安装没有项目是正常现象。区分首次设置验收和已有配置复用，未经过首次设置就明确标注未验证。再次打开启动入口，确认复用已有服务而不是重复启动。若只能完成部分检查，逐项说明已通过、未通过和需要我操作的步骤；没有运行完整 /govern 就不要声称治理全链已验收。不要为验收修改业务数据。
 
 9. 告诉我后续可在“帮助 → 应用更新”中授权自己的 GitHub 凭据，检查、下载并重启安装兼容更新；GitHub CLI 登录不会自动授权应用更新。当前没有更新或尚未授权不代表安装失败。运行中任务会阻止重启安装，下载可以先完成。不要把维护者凭据内置进程序。
 
@@ -68,21 +68,21 @@ Linux 未设置 `XDG_DATA_HOME` 时，默认使用 `~/.local/share/dataagent/`�
 
 ### Windows x64
 
-已接受仓库邀请并安装 GitHub CLI 的用户，在 PowerShell 中逐步执行：
+先确认 v0.2.1 下载页已包含 Windows x64 附件。已接受仓库邀请并安装 GitHub CLI 的用户，在 PowerShell 中逐步执行：
 
 ```powershell
 gh auth login
 New-Item -ItemType Directory -Path DataAgent-download-windows
 Set-Location DataAgent-download-windows
-gh release download v0.2.0 --repo FelixLinn/DataAgent-Releases --pattern 'DataAgent-0.2.0-preview.1-windows-x64.zip' --pattern SHA256SUMS-windows-x64
-Get-FileHash .\DataAgent-0.2.0-preview.1-windows-x64.zip -Algorithm SHA256
+gh release download v0.2.1 --repo FelixLinn/DataAgent-Releases --pattern 'DataAgent-0.2.1-windows-x64.zip' --pattern SHA256SUMS-windows-x64
+Get-FileHash .\DataAgent-0.2.1-windows-x64.zip -Algorithm SHA256
 Get-Content .\SHA256SUMS-windows-x64
 ```
 
 逐字核对两处 SHA256，相同后完整解压，再执行安装：
 
 ```powershell
-Expand-Archive .\DataAgent-0.2.0-preview.1-windows-x64.zip -DestinationPath .\unpacked
+Expand-Archive .\DataAgent-0.2.1-windows-x64.zip -DestinationPath .\unpacked
 .\unpacked\DataAgent\install.cmd
 ```
 
@@ -96,23 +96,23 @@ Expand-Archive .\DataAgent-0.2.0-preview.1-windows-x64.zip -DestinationPath .\un
 
 ### macOS Apple Silicon
 
-以下示例适用于 **macOS Apple Silicon 的 0.2.0**。已安装 GitHub CLI 且接受仓库邀请后，在终端逐步执行：
+以下示例适用于 **macOS Apple Silicon 的 0.2.1**。已安装 GitHub CLI 且接受仓库邀请后，在终端逐步执行：
 
 ```sh
 gh auth login
-mkdir -p DataAgent-download-v0.2.0
-cd DataAgent-download-v0.2.0
-gh release download v0.2.0 --repo FelixLinn/DataAgent-Releases --pattern 'DataAgent-0.2.0-macos-arm64.zip' --pattern SHA256SUMS
+mkdir -p DataAgent-download-v0.2.1
+cd DataAgent-download-v0.2.1
+gh release download v0.2.1 --repo FelixLinn/DataAgent-Releases --pattern 'DataAgent-0.2.1-macos-arm64.zip' --pattern SHA256SUMS
 shasum -a 256 -c SHA256SUMS
 ```
 
 确认校验结果为 `OK` 后再执行：
 
 ```sh
-unzip DataAgent-0.2.0-macos-arm64.zip
+unzip DataAgent-0.2.1-macos-arm64.zip
 sh DataAgent/install.command
 ```
 
-私有附件不能匿名 `curl` 下载。没有 GitHub CLI 时，可以登录 [v0.2.0 下载页](https://github.com/FelixLinn/DataAgent-Releases/releases/tag/v0.2.0)，下载 ZIP 与校验文件后继续安装。
+私有附件不能匿名 `curl` 下载。没有 GitHub CLI 时，可以登录 [v0.2.1 下载页](https://github.com/FelixLinn/DataAgent-Releases/releases/tag/v0.2.1)，下载 ZIP 与校验文件后继续安装。
 
-详细配置和排障见[部署说明](https://oxlh5mrwi0.feishu.cn/docx/Bp5udrz0gooNWnxNYmucfNI9nPg)，使用流程见[用户手册](https://oxlh5mrwi0.feishu.cn/docx/T8ZTd0bptoNyzJxlFRHcpZkNnQZ)，授权更新见[应用更新](README.md#后续更新)。
+详细配置和排障见[部署说明](部署说明.md)，使用流程见[用户手册](用户手册.md)，授权更新见[应用更新](application-updates.md)。

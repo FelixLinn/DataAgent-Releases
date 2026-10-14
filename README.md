@@ -8,12 +8,14 @@
 
 ## 下载与安装
 
-[下载 DataAgent 0.2.0](https://github.com/FelixLinn/DataAgent-Releases/releases/tag/v0.2.0)
+本次改变了随包引擎，请使用完整安装器更新。安装器会保留项目、会话、配置和 Git 历史；活动任务会阻止替换，外部 IGinX 不受影响。不要删除用户数据或在旧包内手工替换 JAR。
 
-当前提供 **macOS Apple Silicon（M 系列芯片）0.2.0** 和 **Windows x64 0.2.0-preview.1** 完整安装包。Windows 包已通过 Windows CI 与 Windows 10 实机安装、服务启动和重复启动验收。Linux 与 Intel Mac 暂无已验收的下载包。
+[下载 DataAgent 0.2.1](https://github.com/FelixLinn/DataAgent-Releases/releases/tag/v0.2.1)
+
+当前修复版本为 **0.2.1**，提供 macOS Apple Silicon（M 系列芯片）与 Windows x64 完整安装包。修复了两平台旧包的 IGinX 监听所有网卡问题，启动会核验实际监听地址。macOS 本机与 Windows CI 已通过真实服务验收。Linux 与 Intel Mac 暂无已验收的下载包。
 
 1. 接受仓库协作者邀请，使用自己的 GitHub 账号登录后打开上面的版本页。
-2. 按平台下载 ZIP 与校验文件：macOS 为 `DataAgent-0.2.0-macos-arm64.zip`、`SHA256SUMS`；Windows 为 `DataAgent-0.2.0-preview.1-windows-x64.zip`、`SHA256SUMS-windows-x64`。校验后完整解压。
+2. 按平台下载 ZIP 与校验文件：macOS 为 `DataAgent-0.2.1-macos-arm64.zip`、`SHA256SUMS`；Windows 为 `DataAgent-0.2.1-windows-x64.zip`、`SHA256SUMS-windows-x64`。校验后完整解压。
 3. macOS 双击 `DataAgent/install.command` 或在终端执行 `sh DataAgent/install.command`；Windows 双击 `DataAgent\install.cmd` 或在 PowerShell 执行。安装到当前用户目录，不需要系统管理员权限。
 4. 首次启动选择自动安装本地 IGinX，或填写已有 IGinX 服务的连接信息。运行依赖随包提供，无需自行安装 Python、Java、ZooKeeper 等。
 5. 配置自己的模型 API 凭据后，选择数据项目，使用 `/govern` 发起治理。
@@ -29,9 +31,9 @@ macOS 包使用 ad-hoc 签名，尚未完成 Apple 公证；Windows 包尚未完
 ```sh
 mkdir -p DataAgent-download
 cd DataAgent-download
-gh release download v0.2.0 --repo FelixLinn/DataAgent-Releases --pattern 'DataAgent-0.2.0-macos-arm64.zip' --pattern SHA256SUMS
+gh release download v0.2.1 --repo FelixLinn/DataAgent-Releases --pattern 'DataAgent-0.2.1-macos-arm64.zip' --pattern SHA256SUMS
 shasum -a 256 -c SHA256SUMS
-unzip DataAgent-0.2.0-macos-arm64.zip
+unzip DataAgent-0.2.1-macos-arm64.zip
 sh DataAgent/install.command
 ```
 
@@ -45,15 +47,15 @@ sh DataAgent/install.command
 gh auth login
 New-Item -ItemType Directory -Path DataAgent-download-windows
 Set-Location DataAgent-download-windows
-gh release download v0.2.0 --repo FelixLinn/DataAgent-Releases --pattern 'DataAgent-0.2.0-preview.1-windows-x64.zip' --pattern SHA256SUMS-windows-x64
-Get-FileHash .\DataAgent-0.2.0-preview.1-windows-x64.zip -Algorithm SHA256
+gh release download v0.2.1 --repo FelixLinn/DataAgent-Releases --pattern 'DataAgent-0.2.1-windows-x64.zip' --pattern SHA256SUMS-windows-x64
+Get-FileHash .\DataAgent-0.2.1-windows-x64.zip -Algorithm SHA256
 Get-Content .\SHA256SUMS-windows-x64
 ```
 
 逐字核对两处 SHA256，相同后完整解压，再执行安装：
 
 ```powershell
-Expand-Archive .\DataAgent-0.2.0-preview.1-windows-x64.zip -DestinationPath .\unpacked
+Expand-Archive .\DataAgent-0.2.1-windows-x64.zip -DestinationPath .\unpacked
 .\unpacked\DataAgent\install.cmd
 ```
 
