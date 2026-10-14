@@ -1,5 +1,7 @@
 # DataAgent 快速安装与部署
 
+> 源码与正式安装包已统一迁到 [FelixLinn/DataAgent](https://github.com/FelixLinn/DataAgent)。当前发行入口为 [DataAgent 0.2.2](https://github.com/FelixLinn/DataAgent/releases/tag/v0.2.2)，最新安装指令见[快速安装与部署](https://github.com/FelixLinn/DataAgent/blob/main/docs/快速安装与部署.md)。本仓库仅保留历史发布，下面的旧仓库命令仅作历史记录，不用于新安装。
+
 把下面的安装指令整体复制给能执行本机终端命令的 Agent（例如 Codex），让它完成环境检查、下载安装和启动验收。安装默认通过命令行完成，不需要 computer use，也不依赖任何浏览器的登录状态。无需把 DataAgent 源代码交给 Agent，也不需要提前安装 Python、Java、ZooKeeper 或 DeepSeek Harness 应用。
 
 你需要一个有权访问 [DataAgent 私有发行仓库](https://github.com/FelixLinn/DataAgent-Releases) 的 GitHub 账号，并已接受仓库邀请。登录、模型密钥和更新凭据由你在本机填写，不要粘贴到聊天中。

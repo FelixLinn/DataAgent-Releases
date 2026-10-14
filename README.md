@@ -1,5 +1,7 @@
 # DataAgent 安装与更新
 
+> 源码与正式安装包已统一迁到 [FelixLinn/DataAgent](https://github.com/FelixLinn/DataAgent)。当前发行入口为 [DataAgent 0.2.2](https://github.com/FelixLinn/DataAgent/releases/tag/v0.2.2)，最新安装指令见[快速安装与部署](https://github.com/FelixLinn/DataAgent/blob/main/docs/快速安装与部署.md)。本仓库仅保留历史发布，下面的旧仓库命令仅作历史记录，不用于新安装。
+
 这是供授权内部用户下载 DataAgent 的私有发行仓库，源代码在独立仓库维护。
 
 ## 让自己的 Agent 帮你安装
